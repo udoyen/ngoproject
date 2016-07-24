@@ -4,6 +4,8 @@ namespace ebs_george_udosen\Http\Controllers\Auth;
 
 use ebs_george_udosen\User;
 use Validator;
+use Socialite;
+use Auth;
 use ebs_george_udosen\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -32,8 +34,6 @@ class AuthController extends Controller
 
     /**
      * Create a new authentication controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -43,7 +43,8 @@ class AuthController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -58,7 +59,8 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return User
      */
     protected function create(array $data)
@@ -68,5 +70,37 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::with('facebook')->redirect();
+    }
+
+    public function getFacebookCallback()
+    {
+        $data = Socialite::with('facebook')->user();
+        $user = User::where('email', $data->email)->first();
+
+        if (!is_null($user)) {
+            Auth::login($user);
+            $user->name = $data->user['name'];
+            $user->facebook_id = $data->id;
+            $user->save();
+        } else {
+            $user = User::where('facebook_id', $data->id)->first();
+            if (is_null($user)) {
+                // Create a new user
+            $user = new User();
+                $user->name = $data->user['name'];
+                $user->email = $data->email;
+                $user->facebook_id = $data->id;
+                $user->save();
+            }
+
+            Auth::login($user);
+        }
+
+        return redirect('/')->with('success', 'Successfully logged in!');
     }
 }
