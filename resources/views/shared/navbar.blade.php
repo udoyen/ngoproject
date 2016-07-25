@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">NGO PROJECT</a>
+            <a class="navbar-brand" href="/">NGO PROJECT</a>
             <a class="navbar-brand" href="#">
               @if(!Auth::guest())
                     {{ Auth::user()->name }}
@@ -20,7 +20,7 @@
         </div>
 
         <!-- Navbar Right -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">            
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Home</a></li>
                 <li><a href="/about">About</a></li>

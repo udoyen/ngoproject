@@ -71,6 +71,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-btn fa-user"></i> Register
                                 </button>
+                                    <a href="/login/facebook"> <div class="btn btn-md btn-primary"> <i class="fa fa-facebook"></i> Login with Facebook </div></a>                              
                             </div>
                         </div>
                     </form>
