@@ -19,7 +19,7 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('login/facebook/callback', 'Auth\AuthController@getFacebookCallback');
 
   Route::get('/', function () {
-      return view('home');
+      return view('welcome');
   });
 
   Route::get('/about', 'PagesController@about');
